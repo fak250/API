@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+  
+  <form 
+      id="get-weather"  action="http://api.openweathermap.org/data/2.5/weather" method="get">
+    
+    <input type="text" name="q">
+
+    <input type="hidden" name="appid" value="6283b6a716c5332a70e57bfe570fd160">
+
+    <input type="hidden" name="mode" value="json">
+    <input type="hidden" name="units" value="metric">
+    <input type="submit" value="get the weather!">
+  </form>
+  
+	  <div id="info">
+		  <h1>Location:</h1><p id="location"></p>
+		  <h1>Temperature(C):</h1><p id="temp"></p>
+	  </div>
+    <script
+  src="http://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+    
+    
+    
+    <script>
+		
+		var $place=$('#location');
+		var $temperature=$('#temp');
+      
+      // event listener      
+      $('#get-weather').on('submit', handleSubmit );
+    
+      //  JS does this for us: handleSubmit(eventObj);
+      
+      function handleSubmit(event) {
+        
+        var queryString = $(this).serialize();
+  
+        $.ajax({
+          url: $('#get-weather').attr('action'),
+          type: 'get',
+          data: queryString
+        }).done(gotData).fail(handleError);
+        
+        event.preventDefault();
+      }
+      
+      function gotData(data) {
+        console.log(data);
+		  $place.text(data.name); $temperature.text(data.main.temp);
+		  
+		  
+      }
+      
+      function handleError(err) {
+        console.log(err);
+      }
+		$('#info').css('display','block');
+      
+      
+    </script>
+    
+    
+    
+    
+  </body>
+</html>
